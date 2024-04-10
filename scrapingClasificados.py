@@ -3,6 +3,7 @@ import requests
 import nums_from_string
 import datetime
 import pandas  as pd
+import os
 pagina="https://clasificados.lostiempos.com/inmuebles?sort_by=created&sort_order=DESC&page="
 np=0
 
@@ -18,6 +19,9 @@ while True:
         htmlP=requests.get(pagina+str(np)).text
         soup=BeautifulSoup(htmlP,features="html.parser")
         ts=soup.find_all("div",{"class":"views-row"})
+        print("extrendo de la pagina:"+str(np))
+        if "No existen resultados para su búsqueda. Intente de nuevo."in soup.text :
+            break
     except:
         break
     np+=1
@@ -43,4 +47,4 @@ datos["body"]=body
 datos["precio"]=precio
 datos["descripcion"]=descripcion
 dia=str(datetime.date.today())
-datos.to_csv("datos"+dia+".csv")
+datos.to_csv("C:\\Users\\Public/datos"+dia+".csv")
